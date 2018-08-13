@@ -1,0 +1,22 @@
+index:
+    resource: "@IndexBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+sales:
+    resource: "@SalesBundle/Controller/"
+    type:     annotation
+    prefix:   /sales
+
+product:
+    resource: "@ProductBundle/Controller/"
+    type:     annotation
+    prefix:   /products
+
+user:
+    resource: "@UserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+fos_user_security:
+   resource: "@FOSUserBundle/Resources/config/routing/security.xml"

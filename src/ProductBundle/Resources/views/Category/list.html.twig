@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Liste Catégories {% endblock %}
+
+{% block body %}
+
+    {{  parent() }}
+    <div class="container product-container">
+        <div class="row justify-content-center">
+            {% for c in categories_list %}
+                <div class="col-3">
+                    <div class="card" style="width: 18rem;">
+                        <img class="card-img-top" src="{{ vich_uploader_asset(c.image,'imageFile') }}" alt="">
+                        <div class="card-body">
+                            <p class="card-text">REF: {{ "%04d"| format(c.id) }}</p>
+                            <p class="card-text">Nom: {{ c.name }}</p>
+                            <p class="text-center card-text">
+                                <a href="{{ path('edit_product_page', {'id': c.id}) }}" data-popup="tooltip" title="Modifier"><i class="icon-pencil5"></i></a>
+                                <a href="{{ path('delete_product_page', {'id': c.id}) }}" data-popup="tooltip" title="Suprimmer" onclick="return confirm('Voulez Vous Supprimer cette Catégorie?')"><i class=" icon-trash"></i></a>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+{% endblock %}

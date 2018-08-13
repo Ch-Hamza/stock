@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8" />
+        <title>{% block title %}Stock Management{% endblock %}</title>
+        {% block stylesheets %}
+            <!-- Global stylesheets -->
+            <link href="{{ asset('assets/css/bootstrap.css') }}" rel="stylesheet" type="text/css">
+            <link rel="stylesheet" href="{{ asset('assets/css/main.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/extras/animate.min.css') }}">
+            <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+            <link rel="stylesheet" href="{{ asset('assets/css/icons/icomoon/styles.css') }}">
+            <link rel="stylesheet" href="{{ asset('assets/css/colors.css') }}">
+            <!-- /global stylesheets -->
+
+
+            <!-- Core JS files -->
+            <script type="text/javascript" src="{{ asset('assets/js/jquery-3.3.1.js') }}"></script>
+            <script type="text/javascript" src="{{ asset('assets/js/boostrap/bootstrap.js') }}"></script>
+            <!-- /core JS files -->
+
+        {% endblock %}
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% block body %}
+            {% include '@Index/navbar.html.twig' %}
+        {% endblock %}
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>
