@@ -35,25 +35,9 @@
 
 {% block javascripts %}
     <script>
-        $('#myInput').on('keyup', function (e) {
-            if (e.keyCode !== 40 && e.keyCode !== 38 && e.keyCode!== 13) {
-                showResult();
-            }
-        });
-        function showResult() {
+        function autocomplete() {
             inp = document.getElementById("myInput");
-            str = $('#myInput').val();
-            $.ajax({
-                url: "search-prod?q=" + str,
-                type:"GET",
-                success:function(msg){
-                    results = msg['data'];
-                },
-                dataType: 'json'
-            });
-
             var currentFocus;
-            //this needs to run on first time
             inp.addEventListener("input", function(e) {
                 var a, b, i, val = this.value;
                 closeAllLists();
@@ -63,6 +47,20 @@
                 a.setAttribute("id", this.id + "autocomplete-list");
                 a.setAttribute("class", "autocomplete-items");
                 this.parentNode.appendChild(a);
+
+                str = $('#myInput').val();
+                $.ajax({
+                    url: "search-prod?q=" + str,
+                    type:"GET",
+                    success: function(msg){
+                        results = msg['data'];
+                    },
+                    error: function(jqXHR, textStatus, errorThrown) {
+                        console.log(errorThrown); // likely 'parseError'
+                    },
+                    dataType: 'json'
+                });
+
                 for (i = 0; i < results.length; i++) {
                     if (results[i]['name'].substr(0, val.length).toUpperCase() === val.toUpperCase()) {
                         b = document.createElement('div');
@@ -84,6 +82,7 @@
                                 }
                             });
                             $('#sales_table').append(row);
+                            inp.value = '';
                             closeAllLists();
                         });
                         a.appendChild(b);
@@ -94,7 +93,7 @@
             inp.addEventListener("keydown", function(e) {
                 var x = document.getElementById(this.id + "autocomplete-list");
                 if (x) x = x.getElementsByTagName("div");
-                if (e.keyCode === 40) { //down
+                if (e.keyCode === 40) {
                     e.preventDefault();
                     currentFocus++;
                     addActive(x);
@@ -102,7 +101,7 @@
                     e.preventDefault();
                     currentFocus--;
                     addActive(x);
-                } else if (e.keyCode === 13) { //enter
+                } else if (e.keyCode === 13) {
                     e.preventDefault();
                     if (currentFocus > -1) {
                         if (x) x[currentFocus].click();
@@ -133,5 +132,23 @@
                 closeAllLists(e.target);
             });
         }
+
+        $(document).ready(function () {
+            str = $('#myInput').val();
+            results = [];
+            $.ajax({
+                url: "search-prod?q=" + str,
+                type:"GET",
+                success: function(msg){
+                    results = msg['data'];
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.log(errorThrown); // likely 'parseError'
+                },
+                dataType: 'json'
+            });
+            autocomplete(results);
+        });
+
     </script>
 {% endblock %}
