@@ -4,27 +4,27 @@
     {{ parent() }}
 
     <div class="container">
-        <div style="margin: 50px">
+        <div class="search-container">
             <h2>Vente</h2>
-            <form autocomplete="off" action="" style="padding: 50px 0px 50px 0px;">
-                <div class="autocomplete" style="width:300px;">
-                    <input id="myInput" type="text" placeholder="Produit">
+            <form autocomplete="off" action="" class="search-form">
+                <div class="autocomplete">
+                    <input id="myInput" type="text" placeholder="Produit" class="form-control">
                 </div>
             </form>
 
             <div>
-                <form action="">
-
+                <form action="{{ path('save_sale_page') }}">
+                    <table id="sales_table" class="table">
+                        <tr>
+                            <th>Code</th>
+                            <th>Produit</th>
+                            <th>Prix</th>
+                            <th>Quantité</th>
+                            <th>Total</th>
+                        </tr>
+                    </table>
+                    <div class="row justify-content-center"><input type="submit" id="validation-btn" class="btn btn-primary validation-btn" value="Valider"></div>
                 </form>
-                <table id="sales_table" class="table">
-                    <tr>
-                        <th>Code</th>
-                        <th>Produit</th>
-                        <th>Prix</th>
-                        <th>Quantité</th>
-                        <th>Total</th>
-                    </tr>
-                </table>
                 <div>Total</div>
             </div>
         </div>
@@ -35,7 +35,7 @@
 
 {% block javascripts %}
     <script>
-        function autocomplete() {
+        function autocomplete(results) {
             inp = document.getElementById("myInput");
             var currentFocus;
             inp.addEventListener("input", function(e) {
@@ -47,20 +47,6 @@
                 a.setAttribute("id", this.id + "autocomplete-list");
                 a.setAttribute("class", "autocomplete-items");
                 this.parentNode.appendChild(a);
-
-                str = $('#myInput').val();
-                $.ajax({
-                    url: "search-prod?q=" + str,
-                    type:"GET",
-                    success: function(msg){
-                        results = msg['data'];
-                    },
-                    error: function(jqXHR, textStatus, errorThrown) {
-                        console.log(errorThrown); // likely 'parseError'
-                    },
-                    dataType: 'json'
-                });
-
                 for (i = 0; i < results.length; i++) {
                     if (results[i]['name'].substr(0, val.length).toUpperCase() === val.toUpperCase()) {
                         b = document.createElement('div');
@@ -72,13 +58,18 @@
                             //add to table
                             $.each(results, function (key, value) {
                                 if ( value['name'] === $('#myInput').val() ) {
-                                    row = '<tr>'
+                                    row = '<tr class="item_row">'
                                         + '<td>' + +'0'+results[key]['id'] + '</td>'
                                         + '<td>' + results[key]['name'] + '</td>'
                                         + '<td>' + results[key]['price'] + '</td>'
-                                        + '<td>' + results[key]['quantity'] + '</td>'
+                                        + '<td><input type="number" min="1" value="1" class="quantity-input"></td>'
                                         + '<td>' + results[key]['quantity']*results[key]['price'] + ' DT</td>'
                                         + '</tr>';
+                                    items.push({
+                                        item: results[key],
+                                        quantity: 1
+
+                                    });
                                 }
                             });
                             $('#sales_table').append(row);
@@ -132,18 +123,23 @@
                 closeAllLists(e.target);
             });
         }
+        
+        $('#validation-btn').on('click', function () {
+           //get quantity for each item and update them in the items array
+            rows = $('.item_row');
+            $.each(rows, function (key, value) {
+                items[key]['quantity'] = $(this).find('.quantity-input').val();
+            });
+        });
 
         $(document).ready(function () {
-            str = $('#myInput').val();
-            results = [];
+            items = [];
             $.ajax({
-                url: "search-prod?q=" + str,
+                url: "search-all",
                 type:"GET",
+                async: false,
                 success: function(msg){
                     results = msg['data'];
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.log(errorThrown); // likely 'parseError'
                 },
                 dataType: 'json'
             });

@@ -63,6 +63,49 @@ class DefaultController extends Controller
         }
         //dump($output);
         return new JsonResponse($output);
-        return new Response(json_encode($result), 200);
+    }
+
+    /**
+     * @Route("/search-all", name="search_all_page")
+     */
+    public function searchAllAction(Request $request)
+    {
+        $result = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
+        $output = array(
+            'data' => array(),
+        );
+        foreach ($result as $item) {
+            $category_image = array();
+            $category = array();
+            $image = array();
+
+            $category_image[] = array(
+                'id' => $item->getCategory()->getImage()->getId(),
+                'image' => $item->getCategory()->getImage()->getImage(),
+                'updated_at' => $item->getCategory()->getImage()->getUpdatedat(),
+            );
+
+            $category[] = array(
+                'id' => $item->getCategory()->getId(),
+                'name' => $item->getCategory()->getName(),
+                'image' => $category_image,
+            );
+
+            $image[] = array(
+                'id' => $item->getImage()->getId(),
+                'image' => $item->getImage()->getImage(),
+                'updated_at' => $item->getImage()->getUpdatedat(),
+            );
+
+            $output['data'][] = [
+                'id' => $item->getId(),
+                'name' => $item->getName(),
+                'price' => $item->getPrice(),
+                'quantity' => $item->getQuantity(),
+                'image' => $image,
+                'category' => $category,
+            ];
+        }
+        return new JsonResponse($output);
     }
 }

@@ -23,7 +23,7 @@ body {
 }
 
 .autocomplete {
-    /*the container must be positioned relative:*/
+    width: 300px;
     position: relative;
     display: inline-block;
 }
@@ -74,4 +74,21 @@ input[type=submit] {
     /*when navigating through the items using the arrow keys:*/
     background-color: DodgerBlue !important;
     color: #ffffff;
+}
+
+.quantity-input {
+    width: 100px;
+}
+
+.search-container {
+    margin: 50px;
+}
+
+.search-form {
+    padding: 50px 0 50px 0;
+}
+
+.validation-btn {
+    margin: 25px;
+    width: 300px;
 }
