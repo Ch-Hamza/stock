@@ -13,18 +13,19 @@
             </form>
 
             <div>
-                <form action="{{ path('save_sale_page') }}">
-                    <table id="sales_table" class="table">
-                        <tr>
-                            <th>Code</th>
-                            <th>Produit</th>
-                            <th>Prix</th>
-                            <th>Quantité</th>
-                            <th>Total</th>
-                        </tr>
-                    </table>
-                    <div class="row justify-content-center"><input type="submit" id="validation-btn" class="btn btn-primary validation-btn" value="Valider"></div>
-                </form>
+                <table id="sales_table" class="table">
+                    <tr>
+                        <th>Code</th>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                        <th></th>
+                    </tr>
+                </table>
+                <div class="row justify-content-center">
+                    <div id="validation-btn" class="btn btn-primary validation-btn">Valider</div>
+                </div>
                 <div>Total</div>
             </div>
         </div>
@@ -35,6 +36,10 @@
 
 {% block javascripts %}
     <script>
+        function deleteItem(e) {
+            $(e).parent().parent().remove();
+        }
+
         function autocomplete(results) {
             inp = document.getElementById("myInput");
             var currentFocus;
@@ -64,10 +69,11 @@
                                         + '<td>' + results[key]['price'] + '</td>'
                                         + '<td><input type="number" min="1" value="1" class="quantity-input"></td>'
                                         + '<td>' + results[key]['quantity']*results[key]['price'] + ' DT</td>'
+                                        + '<td><div class="badge btn btn-danger delete-btn" onclick="deleteItem(this)">X</div></td>'
                                         + '</tr>';
                                     items.push({
                                         item: results[key],
-                                        quantity: 1
+                                        sale_quantity: 1
 
                                     });
                                 }
@@ -125,10 +131,20 @@
         }
         
         $('#validation-btn').on('click', function () {
-           //get quantity for each item and update them in the items array
             rows = $('.item_row');
             $.each(rows, function (key, value) {
-                items[key]['quantity'] = $(this).find('.quantity-input').val();
+                items[key]['sale_quantity'] = $(this).find('.quantity-input').val();
+            });
+            var data_sale = { 'items': JSON.stringify(items) };
+            //console.log(data_sale);
+            $.ajax({
+                url: "sales/save-sale",
+                type:"POST",
+                data: data_sale,
+                success: function(data)
+                {
+                    location.href = '/';
+                }
             });
         });
 
