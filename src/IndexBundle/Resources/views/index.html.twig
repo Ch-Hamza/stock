@@ -23,10 +23,19 @@
                         <th></th>
                     </tr>
                 </table>
+                <div class="row">
+                    <div class="offset-6 col-6">
+                        <hr>
+                        <div class="row">
+                            <div class="col-6 font-weight-bold">Total :</div>
+                            <div class="col-6 text-left final-total font-weight-bold"><span>0</span> DT</div>
+                        </div>
+                        <hr>
+                    </div>
+                </div>
                 <div class="row justify-content-center">
                     <div id="validation-btn" class="btn btn-primary validation-btn">Valider</div>
                 </div>
-                <div>Total</div>
             </div>
         </div>
 
@@ -38,6 +47,7 @@
     <script>
         function deleteItem(e) {
             $(e).parent().parent().remove();
+            $('.final-total').find('span').text(parseInt($('.final-total').find('span').text()) - parseInt($(e).parent().siblings('.local-total').find('span').text()));
         }
 
         function autocomplete(results) {
@@ -60,24 +70,29 @@
                         b.innerHTML += "<input type='hidden' value='" + results[i]['name'] + "'>";
                         b.addEventListener("click", function(e) {
                             inp.value = this.getElementsByTagName("input")[0].value;
-                            //add to table
                             $.each(results, function (key, value) {
                                 if ( value['name'] === $('#myInput').val() ) {
+                                    var id = '' + results[key]['id'];
+                                    while (id.length < 4) {
+                                        id = '0' + id;
+                                    }
                                     row = '<tr class="item_row">'
-                                        + '<td>' + +'0'+results[key]['id'] + '</td>'
+                                        + '<td>' + id + '</td>'
                                         + '<td>' + results[key]['name'] + '</td>'
-                                        + '<td>' + results[key]['price'] + '</td>'
-                                        + '<td><input type="number" min="1" value="1" class="quantity-input"></td>'
-                                        + '<td>' + results[key]['quantity']*results[key]['price'] + ' DT</td>'
+                                        + '<td class="local-price">' + results[key]['price'] + '</td>'
+                                        + '<td><input type="number" min="1" value="1" class="form-control quantity-input"></td>'
+                                        + '<td class="local-total"><span>' + results[key]['price'] + '</span> DT</td>'
                                         + '<td><div class="badge btn btn-danger delete-btn" onclick="deleteItem(this)">X</div></td>'
                                         + '</tr>';
                                     items.push({
                                         item: results[key],
                                         sale_quantity: 1
-
                                     });
+
+                                    $('.final-total').find('span').text(parseInt($('.final-total').find('span').text()) + results[key]['price']);
                                 }
                             });
+
                             $('#sales_table').append(row);
                             inp.value = '';
                             closeAllLists();
@@ -105,6 +120,7 @@
                     }
                 }
             });
+
             function addActive(x) {
                 if (!x) return false;
                 removeActive(x);
@@ -131,12 +147,7 @@
         }
         
         $('#validation-btn').on('click', function () {
-            rows = $('.item_row');
-            $.each(rows, function (key, value) {
-                items[key]['sale_quantity'] = $(this).find('.quantity-input').val();
-            });
             var data_sale = { 'items': JSON.stringify(items) };
-            //console.log(data_sale);
             $.ajax({
                 url: "sales/save-sale",
                 type:"POST",
@@ -160,7 +171,20 @@
                 dataType: 'json'
             });
             autocomplete(results);
-        });
 
+            rows = $('.item_row');
+            $.each(rows, function (key, value) {
+                items[key]['sale_quantity'] = $(this).find('.quantity-input').val();
+            });
+
+            $('#sales_table').on('change', 'input',function (e) {
+                var total = $(e.target).parent().siblings('.local-total').find('span');
+                var input_value = $(e.target).val();
+                var price = $(e.target).parent().siblings('.local-price').text();
+                total.text(price*input_value);
+
+                $('.final-total').find('span').text(parseInt($('.final-total').find('span').text()) + parseInt(price));
+            });
+        });
     </script>
 {% endblock %}
