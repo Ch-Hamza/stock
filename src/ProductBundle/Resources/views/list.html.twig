@@ -14,7 +14,8 @@
                         <div class="card-body">
                             <p class="card-text">REF: {{ "%04d"| format(p.id) }}</p>
                             <p class="card-text">Nom: {{ p.name }}</p>
-                            <p class="card-text">Prix: {{ p.price | number_format(0,'.',',') }} DT</p>
+                            <p class="card-text">Prix d'achat: {{ p.originPrice | number_format(0,'.',',') }} DT</p>
+                            <p class="card-text">Prix de vente: {{ p.price | number_format(0,'.',',') }} DT</p>
                             <p class="card-text">Quantité: {{ p.quantity }}</p>
                             <p class="text-center card-text">
                                 <a href="{{ path('edit_product_page', {'id': p.id}) }}" data-popup="tooltip" title="Modifier"><i class="icon-pencil5"></i></a>

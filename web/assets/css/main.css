@@ -72,3 +72,42 @@ body {
     margin: 25px;
     width: 300px;
 }
+
+/* sales page */
+.icons-list{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    line-height: 1;
+    font-size: 0;
+}
+.icons-list > li {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    font-size: 13px;
+}
+.icons-list > li:first-child {
+    margin-left: 0;
+}
+.icons-list > li > a {
+    color: inherit;
+    display: block;
+    opacity: 1;
+    filter: alpha(opacity=100);
+}
+.icons-list > li > a:hover,
+.icons-list > li > a:focus {
+    opacity: 0.75;
+    filter: alpha(opacity=75);
+}
+.icons-list > li > a > i {
+    top: 0;
+}
+.icons-list > li > a > .caret {
+    margin-top: 0;
+    margin-bottom: 0;
+}
+.icons-list-extended > li {
+    margin-left: 10px;
+}

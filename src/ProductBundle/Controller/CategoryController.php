@@ -64,7 +64,7 @@ class CategoryController extends Controller
     /**
      * @Route("/categories/delete/{id}", name="delete_product_page")
      */
-    public function deleteAction(Request $request, $id)
+    public function deleteAction($id)
     {
         $em = $this->getDoctrine()->getManager();
         $category = $em->getRepository(Category::class)->find($id);

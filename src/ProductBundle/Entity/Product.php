@@ -40,6 +40,13 @@ class Product
     private $price;
 
     /**
+     * @var int
+     *
+     * @ORM\Column(name="origin_price", type="integer", nullable=true)
+     */
+    private $origin_price;
+
+    /**
      *
      * @ORM\OneToOne(targetEntity="ProductBundle\Entity\ProductImage", cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
@@ -58,7 +65,6 @@ class Product
      * @ORM\Column(name="quantity", type="integer")
      */
     private $quantity;
-
 
     /**
      * Get id
@@ -172,6 +178,22 @@ class Product
     public function getImage()
     {
         return $this->image;
+    }
+
+    /**
+     * @return int
+     */
+    public function getOriginPrice()
+    {
+        return $this->origin_price;
+    }
+
+    /**
+     * @param int $origin_price
+     */
+    public function setOriginPrice($origin_price)
+    {
+        $this->origin_price = $origin_price;
     }
 }
 

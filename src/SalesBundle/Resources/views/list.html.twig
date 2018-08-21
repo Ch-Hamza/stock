@@ -1,0 +1,62 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Liste Ventes {% endblock %}
+
+{% block body %}
+    {{  parent() }}
+    <div class="container product-container">
+        <div>
+            <h5>Liste des Ventes</h5>
+            <div>
+                <form action="{{ path('index_sales_page') }}" class="form-inline" method="get" style="padding-top: 25px; padding-bottom: 25px;font-size: 1.25em;">
+                    <div>
+                        <input type="text" class="form-control" name="filter">
+                        <button type="submit" class="btn btn-default">Recherche</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="row justify-content-center">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Produit</th>
+                        <th>Prix</th>
+                        <th>Prix net</th>
+                        <th>Gain</th>
+                        <th>Quantité</th>
+                        <th>Total</th>
+                        <th>Heure</th>
+                        <th>Date</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for s in sales_list %}
+                        <tr>
+                            <td>{{ s.id }}</td>
+                            <td>{{ s.product.name }}</td>
+                            <td>{{ s.product.price }} DT</td>
+                            <td>{{ s.product.originPrice }} DT</td>
+                            <td>{{ (s.product.price) - (s.product.originPrice) }}</td>
+                            <td>{{ s.quantity }}</td>
+                            <td>{{ (s.product.price)*(s.quantity) }} DT</td>
+                            <td>{{ s.saleDate | date_modify("+1 hour") | date("H:i") }}</td>
+                            <td>{{ s.saleDate | date("d-m-Y") }}</td>
+                            <td>
+                                <ul class="icons-list mt-15">
+                                    <li><a href="{{ path('edit_sale_page', {'id': s.id}) }}" data-popup="tooltip" title="Modifier"><i class="icon-pencil5"></i></a></li>
+                                    <li><a href="{{ path('delete_sale_page', {'id': s.id}) }}" data-popup="tooltip" title="Suprimmer" onclick="return confirm('Voulez Vous Vraiment Suprimmer Cette Vente?')"><i class=" icon-trash"></i></a></li>
+                                </ul>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="navigation text-center">
+                {{ knp_pagination_render(sales_list) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}
