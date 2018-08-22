@@ -1,0 +1,29 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Bilan {% endblock %}
+
+{% block body %}
+
+    {{  parent() }}
+    <div class="container" style="margin-top: 25px;">
+        <div class="display-4">Bilan</div>
+        <div>
+            {{ form_start(form) }}
+
+            <div class="row justify-content-center">
+                <div class="col-4">
+                    <div style="padding: 25px">{{ form_row(form.startDate) }}</div>
+                </div>
+                <div class="col-4">
+                    <div style="padding: 25px">{{ form_row(form.finishDate) }}</div>
+                </div>
+            </div>
+            <div class="row justify-content-center">
+                <div>{{ form_row(form.Afficher) }}</div>
+            </div>
+            {{ form_errors(form) }}
+            {{ form_rest(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

@@ -14,9 +14,15 @@ class BilanDateType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('startDate', DateType::class)
-            ->add('finishDate', DateType::class)
-            ->add('Valider',  SubmitType::class)
+            ->add('startDate', DateType::class, array(
+                'data' => new \DateTime("now")
+            ))
+            ->add('finishDate', DateType::class, array(
+                'data' => new \DateTime("now")
+            ))
+            ->add('Afficher',  SubmitType::class, array(
+                'attr' => array('class' => 'submit-form-button')
+            ))
         ;
     }
 

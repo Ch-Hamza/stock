@@ -3,9 +3,12 @@
 namespace SalesBundle\Controller;
 
 use ProductBundle\Entity\Product;
+use SalesBundle\Entity\BilanDate;
 use SalesBundle\Entity\Sale;
+use SalesBundle\Form\BilanDateType;
 use SalesBundle\Form\SaleType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -43,8 +46,18 @@ class DefaultController extends Controller
     {
         $sale = $this->getDoctrine()->getManager()->getRepository(Sale::class)->find($id);
         $form = $this->get('form.factory')->create(SaleType::class, $sale);
+        $old_quantity = $sale->getQuantity();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $new_quantity = $sale->getQuantity();
+            $product = $sale->getProduct();
+            if($new_quantity > $old_quantity) {
+                $product->setQuantity($product->getQuantity() - ($new_quantity - $old_quantity));
+            }
+            elseif ($new_quantity < $old_quantity) {
+                $product->setQuantity($product->getQuantity() + ($old_quantity - $new_quantity));
+            }
+
             $em = $this->getDoctrine()->getManager();
             $em->flush();
             return $this->redirectToRoute('index_sales_page');
@@ -70,9 +83,23 @@ class DefaultController extends Controller
     /**
      * @Route("/bilan", name="bilan_sale_page")
      */
-    public function bilanAction()
+    public function bilanAction(Request $request)
     {
-        return $this->redirectToRoute('index_sales_page');
+        $bilan = new BilanDate();
+        $form = $this->get('form.factory')->create(BilanDateType::class, $bilan);
+
+        if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $data = $em->getRepository(Sale::class)->findDate($bilan);
+            return $this->render('@Sales/bilan_list.html.twig', array(
+                'data' => $data,
+                'bilan' => $bilan,
+            ));
+        }
+
+        return $this->render('@Sales/bilan.html.twig', array(
+            'form' => $form->createView(),
+        ));
     }
 
     /**
@@ -92,6 +119,7 @@ class DefaultController extends Controller
                 $sale->setQuantity($item['sale_quantity']);
                 $sale->setSaleDate(new \DateTime('now'));
                 $em->persist($sale);
+                $product->setQuantity($product->getQuantity() - $item['sale_quantity']);
                 $em->flush();
             }
             return $this->redirectToRoute('index_page');

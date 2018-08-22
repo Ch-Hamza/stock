@@ -10,4 +10,18 @@ namespace SalesBundle\Repository;
  */
 class SaleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findDate($bilan) {
+        $qb = $this->createQueryBuilder('s')
+            ->leftJoin('s.product', 'p')
+            ->addSelect('SUM(p.price*s.quantity) as total_vente')
+            ->addSelect('SUM(p.origin_price*s.quantity) as total_achat')
+            ->addSelect('SUM(s.quantity) as total_quantity')
+            ->groupBy('p.name')
+            ->where('s.saleDate >= :start AND s.saleDate <= :finish')
+                ->setParameter('start', $bilan->getStartDate())
+                ->setParameter('finish', $bilan->getFinishDate());
+
+
+        return $qb->getQuery()->getResult();
+    }
 }

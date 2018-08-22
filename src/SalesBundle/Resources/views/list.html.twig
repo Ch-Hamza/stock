@@ -35,7 +35,7 @@
                 <tbody>
                     {% for s in sales_list %}
                         <tr>
-                            <td>{{ s.id }}</td>
+                            <td>{{ "%04d"|format(s.id) }}</td>
                             <td>{{ s.product.name }}</td>
                             <td>{{ s.product.price }} DT</td>
                             <td>{{ s.product.originPrice }} DT</td>

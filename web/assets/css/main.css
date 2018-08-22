@@ -111,3 +111,7 @@ body {
 .icons-list-extended > li {
     margin-left: 10px;
 }
+
+.submit-form-button {
+    width: 400px;
+}
