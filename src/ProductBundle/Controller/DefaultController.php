@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Controller;
 
+use ProductBundle\Entity\Category;
 use ProductBundle\Form\ProductType;
 use ProductBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,9 +17,10 @@ class DefaultController extends Controller
     public function indexAction()
     {
         $product_list = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
-        dump($product_list);
+        $categories_list = $this->getDoctrine()->getManager()->getRepository(Category::class)->findAll();
         return $this->render('@Product/list.html.twig', array(
             'product_list' => $product_list,
+            'category_list' => $categories_list,
         ));
     }
 

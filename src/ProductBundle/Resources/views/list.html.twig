@@ -5,26 +5,60 @@
 {% block body %}
 
     {{  parent() }}
-    <div class="container product-container">
-        <div class="row justify-content-center">
-            {% for p in product_list %}
-                <div class="col-3 product-container-one">
-                    <div class="card">
-                        <img style="object-fit: cover; height: 25vh;" class="card-img-top img-fluid" src="{{ vich_uploader_asset(p.image,'imageFile') }}" alt="">
-                        <div class="card-body">
-                            <p class="card-text">REF: {{ "%04d"| format(p.id) }}</p>
-                            <p class="card-text">Nom: {{ p.name }}</p>
-                            <p class="card-text">Prix d'achat: {{ p.originPrice | number_format(0,'.',',') }} DT</p>
-                            <p class="card-text">Prix de vente: {{ p.price | number_format(0,'.',',') }} DT</p>
-                            <p class="card-text">Quantité: {{ p.quantity }}</p>
-                            <p class="text-center card-text">
-                                <a href="{{ path('edit_product_page', {'id': p.id}) }}" data-popup="tooltip" title="Modifier"><i class="icon-pencil5"></i></a>
-                                <a href="{{ path('delete_product_page', {'id': p.id}) }}" data-popup="tooltip" title="Suprimmer" onclick="return confirm('Voulez Vous Supprimer ce Produit?')"><i class=" icon-trash"></i></a>
-                            </p>
-                        </div>
+    <div class="row justify-content-center"><a href="{{ path('add_product_page') }}" class="btn btn-primary" style="margin-top: 50px;width: 500px;">Ajouter Produit</a></div>
+    <div class="page-container">
+        <div class="row">
+            <div class="col-2">
+                <div class="container categories_container">
+                    {% for c in category_list %}
+                        <div class="nav-link btn category" style="border: #cccccc 1px solid;border-radius: 0">{{ c.name }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="col-9">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        {% for p in product_list %}
+                            <div class="col-3 product-container-one" data_category="{{ p.category.name }}">
+                                <div class="card">
+                                    <img style="object-fit: cover; height: 25vh;" class="card-img-top img-fluid" src="{{ vich_uploader_asset(p.image,'imageFile') }}" alt="">
+                                    <div class="card-body">
+                                        <p class="card-text">REF: {{ "%04d"| format(p.id) }}</p>
+                                        <p class="card-text">Nom: {{ p.name }}</p>
+                                        <p class="card-text">Prix d'achat: {{ p.originPrice | number_format(0,'.',',') }} DT</p>
+                                        <p class="card-text">Prix de vente: {{ p.price | number_format(0,'.',',') }} DT</p>
+                                        <p class="card-text">Quantité: {{ p.quantity }}</p>
+                                        <p class="text-center card-text">
+                                            <a href="{{ path('edit_product_page', {'id': p.id}) }}" data-popup="tooltip" title="Modifier"><i class="icon-pencil5"></i></a>
+                                            <a href="{{ path('delete_product_page', {'id': p.id}) }}" data-popup="tooltip" title="Suprimmer" onclick="return confirm('Voulez Vous Supprimer ce Produit?')"><i class=" icon-trash"></i></a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
                     </div>
                 </div>
-            {% endfor %}
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.category').on('click', function (e) {
+                var products = $('.product-container-one');
+                $.each(products, function (key, value) {
+                    var product_cat = $(value).attr('data_category');
+                    var clicked_cat = $(e.target).text();
+                    if(product_cat === clicked_cat) {
+                        $(value).show();
+                    }
+                    else {
+                        $(value).hide();
+                    }
+                });
+            })
+        });
+    </script>
 {% endblock %}

@@ -5,12 +5,13 @@
 {% block body %}
 
     {{  parent() }}
+    <div class="row justify-content-center"><a href="{{ path('add_category_page') }}" class="btn btn-primary" style="margin-top: 50px;width: 500px;">Ajouter Catégorie</a></div>
     <div class="container product-container">
         <div class="row justify-content-center">
             {% for c in categories_list %}
-                <div class="col-3">
-                    <div class="card" style="width: 18rem;">
-                        <img class="card-img-top" src="{{ vich_uploader_asset(c.image,'imageFile') }}" alt="">
+                <div class="col-3 product-container-one">
+                    <div class="card">
+                        <img style="object-fit: cover; height: 25vh;" class="card-img-top img-fluid" src="{{ vich_uploader_asset(c.image,'imageFile') }}" alt="">
                         <div class="card-body">
                             <p class="card-text">REF: {{ "%04d"| format(c.id) }}</p>
                             <p class="card-text">Nom: {{ c.name }}</p>

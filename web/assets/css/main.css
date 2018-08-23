@@ -115,3 +115,14 @@ body {
 .submit-form-button {
     width: 400px;
 }
+.page-container {
+    padding-top: 50px;
+}
+.categories_container {
+    padding-left: 50px;
+}
+
+.login-content {
+    width: 500px;
+    margin: 50px auto;
+}
