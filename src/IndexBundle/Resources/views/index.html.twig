@@ -147,6 +147,10 @@
         }
         
         $('#validation-btn').on('click', function () {
+            rows = $('.item_row');
+            $.each(rows, function (key, value) {
+                items[key]['sale_quantity'] = $(this).find('.quantity-input').val();
+            });
             var data_sale = { 'items': JSON.stringify(items) };
             $.ajax({
                 url: "sales/save-sale",
@@ -172,18 +176,18 @@
             });
             autocomplete(results);
 
-            rows = $('.item_row');
-            $.each(rows, function (key, value) {
-                items[key]['sale_quantity'] = $(this).find('.quantity-input').val();
-            });
-
-            $('#sales_table').on('change', 'input',function (e) {
+            $('#sales_table').on('input', 'input',function (e) {
                 var total = $(e.target).parent().siblings('.local-total').find('span');
                 var input_value = $(e.target).val();
                 var price = $(e.target).parent().siblings('.local-price').text();
-                total.text(price*input_value);
+                total.text(price * input_value);
 
-                $('.final-total').find('span').text(parseInt($('.final-total').find('span').text()) + parseInt(price));
+                var totals = $('.local-total');
+                var final_value = 0;
+                $.each(totals, function (key, value) {
+                    final_value = parseInt(final_value) + parseInt($(value).text());
+                });
+                $('.final-total').find('span').text(final_value);
             });
         });
     </script>
