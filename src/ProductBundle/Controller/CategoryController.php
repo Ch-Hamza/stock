@@ -15,7 +15,7 @@ class CategoryController extends Controller
      */
     public function indexAction()
     {
-        $categories_list = $this->getDoctrine()->getManager()->getRepository(Category::class)->findAll();
+        $categories_list = $this->getDoctrine()->getManager()->getRepository(Category::class)->findBy(array('enabled' => true));
         dump($categories_list);
         return $this->render('@Product/Category/list.html.twig', array(
             'categories_list' => $categories_list,
@@ -68,7 +68,7 @@ class CategoryController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $category = $em->getRepository(Category::class)->find($id);
-        $em->remove($category);
+        $category->setEnabled(false);
         $em->flush();
         return $this->redirectToRoute('index_categories_page');
     }

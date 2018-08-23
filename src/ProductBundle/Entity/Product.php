@@ -67,6 +67,12 @@ class Product
     private $quantity;
 
     /**
+     * @ORM\Column(type="boolean", length=255, nullable=true)
+     * @var bool
+     */
+    private $enabled;
+
+    /**
      * Get id
      *
      * @return int
@@ -194,6 +200,22 @@ class Product
     public function setOriginPrice($origin_price)
     {
         $this->origin_price = $origin_price;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isEnabled()
+    {
+        return $this->enabled;
+    }
+
+    /**
+     * @param bool $enabled
+     */
+    public function setEnabled($enabled)
+    {
+        $this->enabled = $enabled;
     }
 }
 

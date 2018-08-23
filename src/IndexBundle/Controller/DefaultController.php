@@ -70,7 +70,7 @@ class DefaultController extends Controller
      */
     public function searchAllAction(Request $request)
     {
-        $result = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
+        $result = $this->getDoctrine()->getManager()->getRepository(Product::class)->findBy(array('enabled' => true));;
         $output = array(
             'data' => array(),
         );

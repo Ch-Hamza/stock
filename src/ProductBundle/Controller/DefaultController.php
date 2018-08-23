@@ -16,8 +16,8 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        $product_list = $this->getDoctrine()->getManager()->getRepository(Product::class)->findAll();
-        $categories_list = $this->getDoctrine()->getManager()->getRepository(Category::class)->findAll();
+        $product_list = $this->getDoctrine()->getManager()->getRepository(Product::class)->findBy(array('enabled' => true));;
+        $categories_list = $this->getDoctrine()->getManager()->getRepository(Category::class)->findBy(array('enabled' => true));;
         return $this->render('@Product/list.html.twig', array(
             'product_list' => $product_list,
             'category_list' => $categories_list,
@@ -70,7 +70,7 @@ class DefaultController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
         $product = $em->getRepository(Product::class)->find($id);
-        $em->remove($product);
+        $product->setEnabled(false);
         $em->flush();
         return $this->redirectToRoute('index_products_page');
     }
