@@ -62,7 +62,7 @@ class CategoryController extends Controller
     }
 
     /**
-     * @Route("/categories/delete/{id}", name="delete_product_page")
+     * @Route("/categories/delete/{id}", name="delete_category_page")
      */
     public function deleteAction($id)
     {

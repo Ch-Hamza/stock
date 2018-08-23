@@ -16,8 +16,8 @@
                             <p class="card-text">REF: {{ "%04d"| format(c.id) }}</p>
                             <p class="card-text">Nom: {{ c.name }}</p>
                             <p class="text-center card-text">
-                                <a href="{{ path('edit_product_page', {'id': c.id}) }}" data-popup="tooltip" title="Modifier"><i class="icon-pencil5"></i></a>
-                                <a href="{{ path('delete_product_page', {'id': c.id}) }}" data-popup="tooltip" title="Suprimmer" onclick="return confirm('Voulez Vous Supprimer cette Catégorie?')"><i class=" icon-trash"></i></a>
+                                <a href="{{ path('edit_category_page', {'id': c.id}) }}" data-popup="tooltip" title="Modifier"><i class="icon-pencil5"></i></a>
+                                <a href="{{ path('delete_category_page', {'id': c.id}) }}" data-popup="tooltip" title="Suprimmer" onclick="return confirm('Voulez Vous Supprimer cette Catégorie?')"><i class=" icon-trash"></i></a>
                             </p>
                         </div>
                     </div>
