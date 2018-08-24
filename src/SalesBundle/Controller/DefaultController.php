@@ -24,7 +24,8 @@ class DefaultController extends Controller
             ->leftJoin('s.product', 'p');
         if($request->query->getAlnum('filter')) {
             $queryBuilder->where('p.name LIKE :name')
-                ->setParameter('name', '%'.$request->query->getAlnum('filter').'%');
+                            ->orderBy('s.saleDate')
+                            ->setParameter('name', '%'.$request->query->getAlnum('filter').'%');
         }
         $query = $queryBuilder->getQuery();
         $paginator = $this->get('knp_paginator');
@@ -33,7 +34,6 @@ class DefaultController extends Controller
             $request->query->getInt('page', 1),
             $request->query->getInt('limit', 10)
         );
-        dump($result);
         return $this->render('@Sales/list.html.twig', array(
             'sales_list' => $result,
         ));

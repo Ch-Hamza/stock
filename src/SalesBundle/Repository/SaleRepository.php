@@ -18,8 +18,8 @@ class SaleRepository extends \Doctrine\ORM\EntityRepository
             ->addSelect('SUM(s.quantity) as total_quantity')
             ->groupBy('p.name')
             ->where('s.saleDate >= :start AND s.saleDate <= :finish')
-                ->setParameter('start', $bilan->getStartDate())
-                ->setParameter('finish', $bilan->getFinishDate());
+                ->setParameter('start', $bilan->getStartDate()->format('Y-m-d'))
+                ->setParameter('finish', $bilan->getFinishDate()->format('Y-m-d'));
 
 
         return $qb->getQuery()->getResult();
