@@ -31,6 +31,7 @@ class CategoryController extends Controller
         $form = $this->get('form.factory')->create(CategoryType::class, $category);
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
+            $category->setEnabled(true);
             $em = $this->getDoctrine()->getManager();
             $em->persist($category);
             $em->flush();
