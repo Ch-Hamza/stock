@@ -49,7 +49,7 @@ class Product
     /**
      *
      * @ORM\OneToOne(targetEntity="ProductBundle\Entity\ProductImage", cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="image_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="image_id", referencedColumnName="id", nullable=true)
      */
     private $image;
 

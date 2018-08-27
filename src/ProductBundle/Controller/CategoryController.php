@@ -16,7 +16,6 @@ class CategoryController extends Controller
     public function indexAction()
     {
         $categories_list = $this->getDoctrine()->getManager()->getRepository(Category::class)->findBy(array('enabled' => true));
-        dump($categories_list);
         return $this->render('@Product/Category/list.html.twig', array(
             'categories_list' => $categories_list,
         ));
