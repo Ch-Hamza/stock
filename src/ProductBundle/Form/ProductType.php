@@ -30,7 +30,9 @@ class ProductType extends AbstractType
                 'class' => 'ProductBundle\Entity\Category',
                 'choice_label' => 'name',
             ))
-            ->add('image', ProductImageType::class)
+            ->add('image', ProductImageType::class, array(
+                'required' => false,
+            ))
             ->add('save',  SubmitType::class)
         ;
     }

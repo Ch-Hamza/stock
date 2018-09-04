@@ -15,7 +15,9 @@ class CategoryType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
-            ->add('image', ProductImageType::class)
+            ->add('image', ProductImageType::class, array(
+                'required' => false,
+            ))
             ->add('save',  SubmitType::class)
         ;
     }

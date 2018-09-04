@@ -3,9 +3,11 @@
 namespace ProductBundle\Controller;
 
 use ProductBundle\Entity\Product;
+use ProductBundle\Entity\ProductImage;
 use ProductBundle\Form\CategoryType;
 use ProductBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -30,6 +32,10 @@ class CategoryController extends Controller
     public function addAction(Request $request)
     {
         $category = new Category();
+        $image = new ProductImage();
+        $image->setImageFile(new File('../web/uploads/img/product_images/default.png'));
+        $image->setImage('default.png');
+        $category->setImage($image);
         $form = $this->get('form.factory')->create(CategoryType::class, $category);
         $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
 

@@ -3,9 +3,11 @@
 namespace ProductBundle\Controller;
 
 use ProductBundle\Entity\Category;
+use ProductBundle\Entity\ProductImage;
 use ProductBundle\Form\ProductType;
 use ProductBundle\Entity\Product;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\File;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -32,6 +34,10 @@ class DefaultController extends Controller
     public function addAction(Request $request)
     {
         $product = new Product();
+        $image = new ProductImage();
+        $image->setImageFile(new File('../web/uploads/img/product_images/default.png'));
+        $image->setImage('default.png');
+        $product->setImage($image);
         $form = $this->get('form.factory')->create(ProductType::class, $product);
         $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
 
