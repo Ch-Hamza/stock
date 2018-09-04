@@ -126,3 +126,18 @@ body {
     width: 500px;
     margin: 50px auto;
 }
+
+.cart-logo i {
+    font-size: 1.5em;
+}
+
+.cart-logo span {
+    font-size: 0.7em;
+    position: relative;
+    bottom: 10px;
+    right: 10px;
+}
+
+.local-total {
+    width: 200px;
+}

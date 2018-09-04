@@ -16,7 +16,10 @@ class DefaultController extends Controller
      */
     public function indexAction()
     {
-        return $this->render('@Index/index.html.twig');
+        $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
+        return $this->render('@Index/index.html.twig', array(
+            'prod_number' => $prod_number,
+        ));
     }
 
     /**

@@ -26,6 +26,9 @@
                             </tr>
                             </thead>
                             <tbody>
+                            {% set sum1 = 0 %}
+                            {% set sum2 = 0 %}
+                            {% set sum3 = 0 %}
                             {% for item in data %}
                                 <tr>
                                     <td>{{ "%04d" | format(loop.index) }}</td>
@@ -36,9 +39,32 @@
                                     <td>{{ item.total_quantity }}</td>
                                     <td>{{ item[0].product.quantity }}</td>
                                 </tr>
+                                {% set sum1 = sum1 + (item.total_achat * item.total_quantity) %}
+                                {% set sum2 = sum2 + (item.total_vente * item.total_quantity) %}
+                                {% set sum3 = sum3 + (sum2) - (sum1) %}
                             {% endfor %}
                             </tbody>
                         </table>
+                    </div>
+                    <div class="row">
+                        <div class="offset-6 col-6">
+                            <hr>
+                            <div class="row">
+                                <div class="col-6 font-weight-bold">Total Achat :</div>
+                                <div class="col-6 text-left final-total font-weight-bold"><span>{{ sum1 }}</span> DT</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-6 font-weight-bold">Total Vente :</div>
+                                <div class="col-6 text-left final-total font-weight-bold"><span>{{ sum2 }}</span> DT</div>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-6 font-weight-bold">Total Gain :</div>
+                                <div class="col-6 text-left final-total font-weight-bold"><span>{{ sum3 }}</span> DT</div>
+                            </div>
+                            <hr>
+                        </div>
                     </div>
                 </p>
             </div>

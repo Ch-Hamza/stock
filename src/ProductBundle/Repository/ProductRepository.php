@@ -17,4 +17,19 @@ class ProductRepository extends \Doctrine\ORM\EntityRepository
                 ->setParameter('name', '%'.$str.'%');
         return $qb->getQuery()->getResult();
     }
+
+    public function findLack()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->where('p.quantity <= 5');
+        return $qb->getQuery()->getResult();
+    }
+
+    public function findLacknum()
+    {
+        $qb = $this->createQueryBuilder('p')
+            ->select('COUNT(p)')
+            ->where('p.quantity <= 5');
+        return $qb->getQuery()->getSingleScalarResult();
+    }
 }

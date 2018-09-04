@@ -19,12 +19,13 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
         $em = $this->getDoctrine()->getManager();
         $queryBuilder = $em->getRepository(Sale::class)->createQueryBuilder('s')
-            ->leftJoin('s.product', 'p');
+            ->leftJoin('s.product', 'p')
+            ->orderBy('s.saleDate');
         if($request->query->getAlnum('filter')) {
             $queryBuilder->where('p.name LIKE :name')
-                            ->orderBy('s.saleDate')
                             ->setParameter('name', '%'.$request->query->getAlnum('filter').'%');
         }
         $query = $queryBuilder->getQuery();
@@ -36,6 +37,7 @@ class DefaultController extends Controller
         );
         return $this->render('@Sales/list.html.twig', array(
             'sales_list' => $result,
+            'prod_number' => $prod_number,
         ));
     }
 
@@ -47,6 +49,7 @@ class DefaultController extends Controller
         $sale = $this->getDoctrine()->getManager()->getRepository(Sale::class)->find($id);
         $form = $this->get('form.factory')->create(SaleType::class, $sale);
         $old_quantity = $sale->getQuantity();
+        $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $new_quantity = $sale->getQuantity();
@@ -65,6 +68,7 @@ class DefaultController extends Controller
 
         return $this->render('@Sales/edit.html.twig', array(
             'form' => $form->createView(),
+            'prod_number' => $prod_number,
         ));
     }
 
@@ -87,6 +91,7 @@ class DefaultController extends Controller
     {
         $bilan = new BilanDate();
         $form = $this->get('form.factory')->create(BilanDateType::class, $bilan);
+        $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -94,11 +99,13 @@ class DefaultController extends Controller
             return $this->render('@Sales/bilan_list.html.twig', array(
                 'data' => $data,
                 'bilan' => $bilan,
+                'prod_number' => $prod_number,
             ));
         }
 
         return $this->render('@Sales/bilan.html.twig', array(
             'form' => $form->createView(),
+            'prod_number' => $prod_number,
         ));
     }
 

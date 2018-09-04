@@ -24,4 +24,14 @@ security:
 
     access_control:
         - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        - { path: ^/, role: ROLE_ADMIN }
+        - { path: ^/$, role: [ROLE_ADMIN, ROLE_USER] }
+        - { path: ^/products/add, role: ROLE_ADMIN }
+        - { path: ^/products/edit, role: ROLE_ADMIN }
+        - { path: ^/products/delete, role: ROLE_ADMIN }
+        - { path: ^/products/categories/add, role: ROLE_ADMIN }
+        - { path: ^/products/categories/edit, role: ROLE_ADMIN }
+        - { path: ^/products/categories/delete, role: ROLE_ADMIN }
+        - { path: ^/sales/edit, role: ROLE_ADMIN }
+        - { path: ^/sales/delete, role: ROLE_ADMIN }
+        - { path: ^/sales/bilan, role: ROLE_ADMIN }
+

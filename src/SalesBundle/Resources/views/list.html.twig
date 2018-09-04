@@ -27,8 +27,8 @@
                         <th>Gain</th>
                         <th>Quantité</th>
                         <th>Total</th>
-                        <th>Heure</th>
-                        <th>Date</th>
+                        <th>{{ knp_pagination_sortable(sales_list, 'Heure', 's.saleDate') }}</th>
+                        <th>{{ knp_pagination_sortable(sales_list, 'Date', 's.saleDate') }}</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
@@ -42,7 +42,7 @@
                             <td>{{ (s.product.price) - (s.product.originPrice) }}</td>
                             <td>{{ s.quantity }}</td>
                             <td>{{ (s.product.price)*(s.quantity) }} DT</td>
-                            <td>{{ s.saleDate | date_modify("+1 hour") | date("H:i") }}</td>
+                            <td>{{ s.saleDate | date("H:i") }}</td>
                             <td>{{ s.saleDate | date("d-m-Y") }}</td>
                             <td>
                                 <ul class="icons-list mt-15">

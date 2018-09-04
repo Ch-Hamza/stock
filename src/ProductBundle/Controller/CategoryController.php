@@ -2,6 +2,7 @@
 
 namespace ProductBundle\Controller;
 
+use ProductBundle\Entity\Product;
 use ProductBundle\Form\CategoryType;
 use ProductBundle\Entity\Category;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -16,8 +17,10 @@ class CategoryController extends Controller
     public function indexAction()
     {
         $categories_list = $this->getDoctrine()->getManager()->getRepository(Category::class)->findBy(array('enabled' => true));
+        $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
         return $this->render('@Product/Category/list.html.twig', array(
             'categories_list' => $categories_list,
+            'prod_number' => $prod_number,
         ));
     }
 
@@ -28,6 +31,7 @@ class CategoryController extends Controller
     {
         $category = new Category();
         $form = $this->get('form.factory')->create(CategoryType::class, $category);
+        $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $category->setEnabled(true);
@@ -39,6 +43,7 @@ class CategoryController extends Controller
 
         return $this->render('@Product/Category/add.html.twig', array(
             'form' => $form->createView(),
+            'prod_number' => $prod_number,
         ));
     }
 
@@ -49,6 +54,7 @@ class CategoryController extends Controller
     {
         $category = $this->getDoctrine()->getManager()->getRepository(Category::class)->find($id);
         $form = $this->get('form.factory')->create(CategoryType::class, $category);
+        $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
 
         if ($request->isMethod('POST') && $form->handleRequest($request)->isValid()) {
             $em = $this->getDoctrine()->getManager();
@@ -58,6 +64,7 @@ class CategoryController extends Controller
 
         return $this->render('@Product/Category/edit.html.twig', array(
             'form' => $form->createView(),
+            'prod_number' => $prod_number,
         ));
     }
 
