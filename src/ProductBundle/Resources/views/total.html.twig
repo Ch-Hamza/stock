@@ -1,0 +1,67 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}{{ parent() }} - Total Produits {% endblock %}
+
+{% block body %}
+
+    {{  parent() }}
+    <div class="page-container">
+        <div class="row">
+            <div class="col-10">
+                <div class="container">
+                    <div class="row justify-content-center">
+                        {% set sum1 = 0 %}
+                        {% set sum2 = 0 %}
+                        {% set sum3 = 0 %}
+                        {% for p in product_list %}
+                            {% set sum1 = sum1 + (p.price*p.quantity) %}
+                            {% set sum2 = sum2 + (p.originPrice*p.quantity) %}
+                        {% endfor %}
+                        {% set sum3 = (sum1) - (sum2) %}
+
+                        <div class="container" style="width: 500px;">
+                            <div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold">Total Achat :</div>
+                                    <div class="col-6 text-left final-total font-weight-bold"><span>{{ sum2 }}</span> DT</div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold">Total Vente :</div>
+                                    <div class="col-6 text-left final-total font-weight-bold"><span>{{ sum1 }}</span> DT</div>
+                                </div>
+                                <hr>
+                                <div class="row">
+                                    <div class="col-6 font-weight-bold">Total Gain :</div>
+                                    <div class="col-6 text-left final-total font-weight-bold"><span>{{ sum3 }}</span> DT</div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function () {
+            $('.category').on('click', function (e) {
+                var products = $('.product-container-one');
+                $.each(products, function (key, value) {
+                    var product_cat = $(value).attr('data_category');
+                    var clicked_cat = $(e.target).text();
+                    if(product_cat === clicked_cat) {
+                        $(value).show();
+                    }
+                    else {
+                        $(value).hide();
+                    }
+                });
+            })
+        });
+    </script>
+{% endblock %}

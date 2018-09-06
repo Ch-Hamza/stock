@@ -34,4 +34,5 @@ security:
         - { path: ^/sales/edit, role: ROLE_ADMIN }
         - { path: ^/sales/delete, role: ROLE_ADMIN }
         - { path: ^/sales/bilan, role: ROLE_ADMIN }
+        - { path: ^/products/total, role: ROLE_ADMIN }
 

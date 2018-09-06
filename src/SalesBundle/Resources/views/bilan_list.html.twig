@@ -41,8 +41,8 @@
                                 </tr>
                                 {% set sum1 = sum1 + (item.total_achat * item.total_quantity) %}
                                 {% set sum2 = sum2 + (item.total_vente * item.total_quantity) %}
-                                {% set sum3 = sum3 + (sum2) - (sum1) %}
                             {% endfor %}
+                            {% set sum3 = (sum2) - (sum1) %}
                             </tbody>
                         </table>
                     </div>

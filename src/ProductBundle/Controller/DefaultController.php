@@ -29,6 +29,19 @@ class DefaultController extends Controller
     }
 
     /**
+     * @Route("/total", name="index_total_page")
+     */
+    public function totalAction()
+    {
+        $product_list = $this->getDoctrine()->getManager()->getRepository(Product::class)->findBy(array('enabled' => true));
+        $prod_number = $this->getDoctrine()->getManager()->getRepository(Product::class)->findLacknum();
+        return $this->render('@Product/total.html.twig', array(
+            'product_list' => $product_list,
+            'prod_number' => $prod_number,
+        ));
+    }
+
+    /**
      * @Route("/add", name="add_product_page")
      */
     public function addAction(Request $request)
